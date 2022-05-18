@@ -1,0 +1,129 @@
+---
+title: "Power Analysis"
+author: "Hayden Spence"
+date: "5/14/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+ 
+## Install and Load pwr package 
+ 
+```{r}
+## install.packages("pwr")
+library(pwr)
+
+```
+ 
+ 
+## Conduct a power analysis to DETERMINE SAMPLE SIZE needed for an RCT 
+### Note that we provide effect size and power, therefore n is estimated 
+```{r}
+pwr.t.test(d=0.56, power=0.80, type="two.sample", alternative="two.sided")
+
+```
+ 
+## Let's plot the power curve 
+### First, Assign results to an object
+```{r}
+pow.1<-pwr.t.test(d=0.56, power=0.80, type="two.sample", alternative="two.sided")
+
+```
+
+## Now plot the results from object
+```{r}
+plot(pow.1, xlab="Sample Size per group")
+
+```
+## Conduct a power analysis to solve for EFFECT SIZE for an RCT 
+### Note, that we provide power, sample size, and now the Effect Size is estimated
+```{r}
+
+pow.2 <- pwr.t.test(power=0.60, n=75, type="two.sample", alternative="two.sided")
+plot(pow.2, xlab="Sample Size per group")
+```
+
+
+## Conduct a power analysis to solve for POWER for an RCT 
+### Note, that we provide effect size, sample size, and now the POWER is estimated
+```{r}
+pow.3 <- pwr.t.test(d = .42, n=150, type="two.sample", alternative="two.sided")
+plot(pow.3, xlab="Sample Size per group")
+
+```
+
+ 
+##  Power analysis for 4 group Comparative Effectiveness one-way anova
+
+### Similarly, we estimate needed sample size for a given Effect Size and Power
+
+```{r}
+pwr.anova.test(f=0.28,k=4,power =0.80, sig.level=0.05)
+ 
+```
+
+## Now let's solve for Power given that we provide sample size, groups, and effect size
+
+```{r}
+pwr.anova.test(f=0.30,k=4,n=45, sig.level=0.05)
+```
+
+
+## Now let's solve for Power given that we provide sample size, groups, and effect size
+```{r}
+
+pwr.anova.test(power=.80,k=4,n=45, sig.level=0.05)
+
+```
+
+
+
+## Now let's plot our three respective power analyses
+```{r}
+
+pow.4<-pwr.anova.test(f=0.28,k=4,power =0.80, sig.level=0.05)
+plot(pow.4)
+ 
+
+pow.5<-pwr.anova.test(f=0.30,k=4,n=45, sig.level=0.05)
+plot(pow.5)
+
+ 
+pow.6<-pwr.anova.test(power=.80,k=4,n=45, sig.level=0.05)
+plot(pow.6)
+ 
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+

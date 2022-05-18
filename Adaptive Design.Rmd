@@ -1,0 +1,96 @@
+---
+title: "Adaptive Design"
+output: html_notebook
+author: "Hayden Spence"
+---
+# Population Based Prevention
+
+##### Universal Intervention
+- Uniform manualization often allows for better fidelity
+- Moderate effects
+
+##### Selected Intervention
+- Costly to implement and have lower participation rates
+- Potential stigma of being selected for a program
+
+##### Indicated Intervention
+- 
+-
+-
+
+***
+How can we improve outcomes for those who do not respond.
+
+##### Precision Medicine Initiative (2015), Obama Administration
+
+Can sata about individual risk factors identify drivers of poor outcomes. How can this information be applied to treatment decision making.
+
+1. Prior to the start of intervention (a priori)
+Given evidence base
+
+2. SMART Trial
+Identification is done during the intervention or trial
+
+Primary analysis involves 
+
+Traditional Clinical Trial Phases
+
+1. Determine mechanism of action and possible negative outcomes of increasing intervention. Obtain enough information to understand the nature of the intervention's ability to produce outcome.
+
+2. Dose to response: dose-escalation, dose-response, dose-finding
+
+3. Confirmation
+
+
+
+
+
+
+
+
+```{r}
+BMAD = function(nSims=10, cntlType=\strong", nStages=2, u0p=0.2,
+u0n=0.1, sigma=1, np1=50, np2=50, nn1=100, nn2=100, alpha1=0.01,
+beta1=0.15, alpha2=0.1871) f
+FSP=0; ESP=0; Power=0; AveN=0; pPower=0; oPower=0
+for (isim in 1:nSims) {
+up1=rnorm(1)*sigma/sqrt(np1)+u0p
+un1=rnorm(1)*sigma/sqrt(nn1)+u0n
+uo1=(up1*np1+un1*nn1)/(np1+nn1)
+Tp1=up1*sqrt(np1)/sigma
+To1=uo1*sqrt((np1+nn1))/sigma
+T1=max(Tp1,To1)
+p1=1-pnorm(T1)
+if (cntlType==\strong") fp1=2*p1g
+if (p1>beta1) fFSP=FSP+1/nSimsg
+if (p1<=alpha1) f
+Power=Power+1/nSims; ESP=ESP+1/nSims
+if (Tp1>To1) fpPower=pPower+1/nSimsg
+if (Tp1<=To1) foPower=oPower+1/nSimsg
+g
+AveN=AveN+2*(np1+nn1)/nSims
+if (nStages==2 & p1>alpha1 & p1<=beta1) f
+up2=rnorm(1)*sigma/sqrt(np2)+u0p
+un2=rnorm(1)*sigma/sqrt(nn2)+u0n
+uo2=(up2*np2+un2*nn2)/(np2+nn2)
+Tp2=up2*sqrt(np2)/sigma
+To2=uo2*sqrt(np2+nn2)/sigma
+if (Tp1>To1) f
+T2=Tp2
+AveN=AveN+2*np2/nSims
+g
+if (Tp1<=To1) f
+T2=To2
+AveN=AveN+2*(np2+nn2)/nSims
+g
+p2=1-pnorm(T2)
+TS=p1+p2
+if (TS<=alpha2) f
+Power=Power+1/nSims
+if (Tp1>To1) fpPower=pPower+1/nSimsg
+if (Tp1<=To1) foPower=oPower+1/nSimsg
+}
+}
+}
+return (cbind(FSP, ESP, Power, AveN, pPower, oPower))
+```
