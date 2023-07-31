@@ -1,0 +1,83 @@
+---
+title: "CER and Preference Analysis"
+author: "Hayden Spence"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Load Required Libraries
+```{r}
+# install.packages("haven", "dblyr", "ggplot2", "multcomp") # Uncomment to install the packages if necessary
+library(haven)
+library(dplyr)
+library(ggplot2)
+library(multcomp)
+```
+## Load the Data
+```{r}
+FTC <- read_sav("data.sav")
+```
+## Data Summary
+```{r}
+group_by(FTC, ThreeGroup) %>%
+  summarise(
+    count = n(),
+    mean = mean(HARSH3, na.rm = TRUE),
+    sd = sd(HARSH3, na.rm = TRUE)
+  )
+```
+## Box Plots
+```{r}
+library(ggplot2)
+FTC$ThreeGroup<-as.factor(FTC$ThreeGroup)
+FTC$BOY<-as.factor(FTC$BOY)
+
+plot <- ggplot(FTC, aes(ThreeGroup, HARSH3)) 
+plot + geom_boxplot() +
+  ggtitle("Harsh Parenting Post Test by Group") +
+  xlab("Groups") + ylab("Harsh Parenting") 
+
+plot + geom_boxplot(aes(group=ThreeGroup, fill = ThreeGroup)) +
+  theme_minimal() + 
+  theme(legend.position = "top")
+
+plot2<-ggplot((data=subset(FTC, !is.na(ThreeGroup))), aes(ThreeGroup, HARSH3)) + 
+  geom_boxplot(aes(group=ThreeGroup, fill = ThreeGroup), notch=TRUE) +
+  theme_minimal() + 
+  theme(legend.position = "top")
+
+plot2 + geom_boxplot(outlier.shape = NA) + geom_jitter(width = 0.2)
+
+plot + geom_boxplot(aes(colour = BOY))
+
+plot3<-ggplot((data=subset(FTC, !is.na(ThreeGroup))), aes(ThreeGroup, HARSH3)) + 
+  theme_minimal() + 
+  theme(legend.position = "top") +
+  geom_boxplot(aes(fill=BOY))
+plot3
+```
+## Analysis of Variance (ANOVA)
+```{r}
+ANOVA.mod <- aov(HARSH3~ThreeGroup, data = FTC)
+summary(ANOVA.mod)
+```
+## Pairwise Comparisons using Tukey's Honest Significant Differences
+```{r}
+TukeyHSD(ANOVA.mod)
+```
+## Multiple Pairwise Comparisons
+```{r}
+summary(glht(ANOVA.mod, linfct = mcp(ThreeGroup = "Tukey")))
+```
+## Homogeneity of Variances
+```{r}
+# Plot the variances
+plot(ANOVA.mod, 1)
+
+# Conduct a formal Levene Test on homogeneity of variance 
+library(car)
+leveneTest(HARSH3~ThreeGroup, data = FTC)
+```
