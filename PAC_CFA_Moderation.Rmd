@@ -1,0 +1,69 @@
+---
+title: "PAC, CFA, and Moderation"
+---
+title: "PAC, CFA, and Moderation"
+author: "Hayden Spence"
+date: "5/14/2020"
+output: html_document
+---
+
+This notebook presents an analysis of the relationship between bed days, gender, and time in a given dataset. Our primary objective is to investigate whether the effect of bed days on time is moderated by gender. To accomplish this, we first check and install the necessary R packages. After that, we load the dataset from a CSV file and define our variable lists, including a list of all variables and a subset of categorical variables. We then generate a descriptive table of our variables using the 'CreateTableOne' function from the 'tableone' package. Next, we define our predictor (bed days), mediator (gender), and outcome (time) variables. The predictor and mediator variables are centered, and a moderated linear regression model is fitted to these variables. The summary of this model provides detailed results about the effect of the predictor and mediator on the outcome variable. Finally, we visualize the distribution of our key variables using boxplots. This analysis aids in the interpretation of the data and provides insights into potential trends or outliers.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load Required Libraries
+```{r}
+# Function to install necessary packages
+install_packages <- function(required_packages) {
+  installed_packages <- rownames(installed.packages())
+  packages_to_install <- required_packages[!(required_packages %in% installed_packages)]
+  if(length(packages_to_install)) install.packages(packages_to_install)
+}
+
+# List of packages required for analysis
+required_packages <- c("mediation", "multilevel", "QuantPsyc", "energy", "ICS", "mvtnorm", "nortest", "tseries")
+install_packages(required_packages)
+```
+## Read Dataset
+```{r}
+data_path <- file.path("C:", "Users", "PC", "R_Notebooks", "Final", "cleanfile4.csv")
+dataset <- read_csv(data_path)
+```
+## Define Variable Lists
+```{r}
+all_vars <- c("age", "gender", "race", "ethnic", "city", "living", "icd10", "insurance", "dx", "phone_disposition", "team_sent", "time", "resp_time", "respite_location", "bed_days", "mobile_disposition")
+categorical_vars <- c("gender", "race", "ethnic", "living", "city", "icd10", "insurance", "dx", "phone_disposition", "team_sent", "mobile_disposition", "respite_location")
+```
+## Create Table One
+```{r}
+table1 <- CreateTableOne(vars = all_vars, data = dataset, factorVars = categorical_vars)
+table1
+```
+## Define Predictor, Mediator, and Outcome Variables
+```{r}
+X <- dataset$bed_days
+M <- dataset$gender
+Y <- dataset$time
+```
+## Center Predictor and Mediator Variables
+```{r}
+# Center predictor and mediator variables
+X_centered <- scale(X, center=TRUE, scale=FALSE)
+M_centered <- scale(M, center=TRUE, scale=FALSE)
+```
+## Fit Moderated Model
+```{r}
+moderated_model <- lm(Y ~ X_centered + M_centered + X_centered:M_centered, data=dataset)
+summary(moderated_model)
+```
+## Create Boxplots for Key Variables
+```{r}
+# Create boxplots for key variables
+boxplot(dataset$bed_days, main="Bed Days")
+boxplot(dataset$time, main="Time")
+```
+
+
+
