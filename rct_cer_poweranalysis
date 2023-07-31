@@ -1,0 +1,53 @@
+---
+title: "Power Analysis for RCT and ANOVA"
+author: "Hayden Spence"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+This notebook is a comprehensive demonstration of power analyses for t-tests and ANOVAs, showing how to calculate the required sample size, power, and effect size in various scenarios.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Load Required Libraries
+```{r}
+# install.packages("pwr") # Uncomment to install the package if necessary
+library(pwr)
+```
+## Power Analysis for Randomized Controlled Trial (RCT)
+### Calculate Required Sample Size for RCT
+```{r}
+pwr.t.test(d=0.56, power=0.80, type="two.sample", alternative="two.sided")
+```
+### Plot Power Curve for RCT
+```{r}
+pow.1 <- pwr.t.test(d=0.43, power=0.80, type="two.sample", alternative="two.sided")
+plot(pow.1, xlab="Sample Size per group")
+```
+### Calculate Required Effect Size for RCT
+```{r}
+pow.2 <- pwr.t.test(power=0.60, n=75, type="two.sample", alternative="two.sided")
+plot(pow.2, xlab="Sample Size per group")
+```
+### Calculate Power for RCT
+```{r}
+pow.3 <- pwr.t.test(d = .42, n=150, type="two.sample", alternative="two.sided")
+plot(pow.3, xlab="Sample Size per group")
+```
+
+## Power Analysis for Analysis of Variance (ANOVA)
+### Calculate Required Sample Size for ANOVA
+```{r}
+pwr.anova.test(f=0.28, k=4, power =0.80, sig.level=0.05)
+```
+### Calculate Power for ANOVA
+```{r}
+pow.4 <- pwr.anova.test(f=0.30, k=4, n=45, sig.level=0.05)
+plot(pow.4)
+```
+### Calculate Required Effect Size for ANOVA
+```{r}
+pow.5 <- pwr.anova.test(power=.80, k=4, n=45, sig.level=0.05)
+plot(pow.5)
+```
