@@ -3,10 +3,6 @@
 Reston, VA | resume@haydenspence.com | [LinkedIn: haydenbspence](https://linkedin.com/in/haydenbspence) | [GitHub: haydenbspence](https://github.com/haydenbspence)
 
 
-## Professional Summary
-
-Clinical Informaticist with 3+ years of specialized experience developing and implementing OMOP Common Data Model solutions within the VA Healthcare system's Corporate Data Warehouse. Expert in healthcare interoperability standards, clinical terminologies, and ETL processes for transforming complex EHR and claims data into research-ready datasets. Successfully supported observational research initiatives through data mapping, cleaning, and structuring while ensuring regulatory compliance. Combines technical skills (SQL, Python, R) with clinical background to develop high-quality healthcare data solutions across multiple disease domains. M.S. in Prevention Science with proven ability to translate complex healthcare data into actionable insights for clinical research applications.
-
 
 ## Professional Experience
 
