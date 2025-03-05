@@ -40,7 +40,6 @@ Consulted for the Department of Defense Under Secretary for Personnel and Readin
 - Created data visualizations, infographics, and reports that effectively communicated complex healthcare metrics to diverse audiences
 - Tracked implementation of standardized assessment tools and protocols across military healthcare settings
 - Drafted responses to Congressional inquiries and prepared materials for testimonies related to military mental health initiatives
-- Met requirements for Top Secret security clearance eligibility through successful background investigation and credit check
 
 
 ### Program Coordinator
